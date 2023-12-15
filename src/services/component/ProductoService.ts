@@ -1,12 +1,13 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import Producto from "../../models/producto";
 
 const API_BASE_URL = "https://api.escuelajs.co/api/v1";
 
 const ProductoService = {
-  get: async () => {
+  get: async (): Promise<Producto[]> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/products`);
-      return response;
+      const response: AxiosResponse<Producto[]> = await axios.get(`${API_BASE_URL}/products`);
+      return response.data;
     } catch (error) {
       throw new Error(`Error al obtener los datos`);
     }

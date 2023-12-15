@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import ProductoService from "../../../services/component/ProductoService";
+import Producto from "../../../models/producto";
 
 function UseLstProducto(){
-    const [data, setData] = useState([])
+  const [data, setData] = useState<Producto[]>([]);
     
     useEffect(() => {
         const fetchData = async () => {
