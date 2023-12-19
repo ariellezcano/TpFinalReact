@@ -4,9 +4,20 @@ import Producto from "../../models/producto";
 const API_BASE_URL = "https://api.escuelajs.co/api/v1";
 
 const ProductoService = {
-  get: async (): Promise<Producto[]> => {
+  
+  getPagination: async (offset: number, limit: number): Promise<Producto[]> => {
     try {
-      const response: AxiosResponse<Producto[]> = await axios.get(`${API_BASE_URL}/products`);
+      const response: AxiosResponse<Producto[]> = await axios.get(`${API_BASE_URL}/products?offset=${offset}&limit=${limit}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error al obtener los datos`);
+    }
+  },
+
+  
+  getFilter: async (criterio: string): Promise<Producto[]> => {
+    try {
+      const response: AxiosResponse<Producto[]> = await axios.get(`${API_BASE_URL}/products/?title=${criterio}`);
       return response.data;
     } catch (error) {
       throw new Error(`Error al obtener los datos`);
@@ -46,16 +57,16 @@ const ProductoService = {
     }
   },
 
-  getFilter: async (title: unknown) => {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/products/?title=${title}`
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error(`Error al obtener los datos`);
-    }
-  },
+  // getFilter: async (title: unknown) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${API_BASE_URL}/products/?title=${title}`
+  //     );
+  //     return response.data;
+  //   } catch (error) {
+  //     throw new Error(`Error al obtener los datos`);
+  //   }
+  // },
 
   //   delete: async (endpoint) => {
   //     try {

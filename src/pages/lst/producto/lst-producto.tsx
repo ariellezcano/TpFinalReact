@@ -1,8 +1,17 @@
+import { useState } from "react";
 import Producto from "../../../models/producto";
-import UseLstProducto from "./useLstProducto";
+import FilProducto from "../../filters/fil-producto";
 
 function LstProducto() {
-  const { data } = UseLstProducto();
+  //const { data } = UseFilProducto();
+
+  const [dataRecibida, setReceivedData] = useState([]);
+
+  const onDataChange = (data) => {
+    // Esta función se ejecutará cuando FilProducto pase los datos
+    console.log("Datos recibidos en LstProducto:", data);
+    setReceivedData(data); // Actualizar el estado con los datos recibidos
+  };
 
   return (
     <div>
@@ -17,7 +26,14 @@ function LstProducto() {
           </button>
         </div>
       </div>
-    {Array.isArray(data) && data.length > 0 ? (
+      <hr />
+      <div className="row">
+        <div className="col-md-12">
+          <FilProducto onDataChange={onDataChange}/>
+        </div>
+      </div>
+      <hr />
+    {Array.isArray(dataRecibida) && dataRecibida.length > 0 ? (
       <table className="table">
         <thead className=" table-primary">
           <tr>
@@ -27,7 +43,7 @@ function LstProducto() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item: Producto) => (
+          {dataRecibida.map((item: Producto) => (
             <tr key={item.id}>
               <td>{item.title}</td>
               <td>{item.price}</td>
