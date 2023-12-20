@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Producto from "../../models/producto";
-import ProductoService from "../../services/component/ProductoService";
+import Producto from "../../../models/producto";
+import ProductoService from "../../../services/component/ProductoService";
 
 function UseFilProducto() {
   const [pagina, setPagina] = useState(1);

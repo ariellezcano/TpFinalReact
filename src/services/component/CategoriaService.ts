@@ -1,12 +1,26 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import Categoria from '../../models/categoria';
 
 const API_BASE_URL = "https://api.escuelajs.co/api/v1";
 
 const CategoriaService = {
 
-  get: async () => {
+  getPagination: async (offset: number, limit: number): Promise<Categoria[]> => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/categories`);
+      const response: AxiosResponse<Categoria[]> = await axios.get(
+        `${API_BASE_URL}/categories?offset=${offset}&limit=${limit}`
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error al obtener los datos`);
+    }
+  },
+
+  getFilter: async (criterio: string): Promise<Categoria[]> => {
+    try {
+      const response: AxiosResponse<Categoria[]> = await axios.get(
+        `${API_BASE_URL}/categories/?title=${criterio}`
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Error al obtener los datos`);
@@ -15,16 +29,15 @@ const CategoriaService = {
 
   getId: async (id: unknown) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/categories/:${id}`);
+      const response = await axios.get(`${API_BASE_URL}/categories/${id}`);
       return response.data;
     } catch (error) {
       throw new Error(`Error al obtener los datos`);
     }
   },
-
   post: async (data: unknown) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/categories/create`, data);
+      const response = await axios.post(`${API_BASE_URL}/categories/`, data);
       return response.data;
     } catch (error) {
       throw new Error(`Error al crear el dato`);

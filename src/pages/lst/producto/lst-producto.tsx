@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Producto from "../../../models/producto";
-import FilProducto from "../../filters/fil-producto";
+import FilProducto from "../../filters/fil-producto/fil-producto";
 import UseLstProducto from "./useLstProducto";
 
 function LstProducto() {

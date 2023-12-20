@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import ProductoService from "../../../services/component/ProductoService";
-import Producto from "../../../models/producto";
 import Swal from "sweetalert2";
+import Categoria from "../../../models/categoria";
+import CategoriaService from "../../../services/component/CategoriaService";
 
 interface UseAbmProductoProps {
     id: number; // Establecer el tipo de 'id'
   }
   
 
-function UseAbmProducto({ id }: UseAbmProductoProps) {
-  const [producto, setProducto] = useState<Producto | null>(null);
+function UseAbmCategoria({ id }: UseAbmProductoProps) {
+  const [categoria, setCategoria] = useState<Categoria | null>(null);
 
   async function action(id: number, item: FormData) {
     try {
       if (id > 0) {
-        await updateProduct(id, item);
+        await updateCategoria(id, item);
       } else {
-        await addProducto(item);
+        await addCategoria(item);
       }
     } catch (error) {
       Swal.fire({
@@ -27,12 +27,12 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
     }
   }
 
-  async function obtenerProducto(id: number) {
+  async function obtenerCategoria(id: number) {
     try {
       if (id !== undefined && id > 0) {
-        const fetchedProducto = await ProductoService.getId(id);
-        console.log("por id", fetchedProducto)
-        setProducto(fetchedProducto);
+        const fetchedCategoria = await CategoriaService.getId(id);
+        console.log("por id", fetchedCategoria)
+        setCategoria(fetchedCategoria);
       }
     } catch (error) {
       console.error('Error al obtener el producto:', error);
@@ -50,41 +50,41 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
     useEffect(() => {
       // Verificar si el id es mayor que 0 y no es undefined antes de llamar a obtenerProducto
       if (id !== undefined && id > 0) {
-        obtenerProducto(id);
+        obtenerCategoria(id);
       }
     }, [id]);
 
-  async function updateProduct(id: number, updatedProduct: FormData) {
+  async function updateCategoria(id: number, updatedProduct: FormData) {
     try {
-      const update = await ProductoService.put(id, updatedProduct);
+      const update = await CategoriaService.put(id, updatedProduct);
       console.log("update", update)
       // Actualizar el estado del producto después de la actualización exitosa
-      setProducto(update);
+      setCategoria(update);
       redireccionar()
     } catch (error) {
       console.log(error)
     }
   }
 
-  async function addProducto(newProduct: FormData) {
+  async function addCategoria(newCategoria: FormData) {
     try {
-      const addNewProduct = await ProductoService.post(newProduct);
-      console.log("creado", addNewProduct);
-      setProducto(addNewProduct);
+      const addNewCategoria = await CategoriaService.post(newCategoria);
+      console.log("creado", addNewCategoria);
+      setCategoria(addNewCategoria);
     } catch (error) {
       // Manejar errores aquí
     }
   }
 
   const redireccionar = () => {
-    window.location.href = `/productos`;
+    window.location.href = `/categorias`;
   };
 
   return {
     action,
-    producto,
+    categoria,
     redireccionar,
-    obtenerProducto,
+    obtenerCategoria,
   };
 }
-export default UseAbmProducto;
+export default UseAbmCategoria;
