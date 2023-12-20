@@ -1,14 +1,14 @@
 class Producto {
-    id!: number
+    id?: number
     title!: string
-    price!: number
+    price!: string
     descripcion!: string
-    category!: {
+    category?: {
         id: number
         name: string
         image: unknown
     }
-    images!:[]
+    images!:unknown | undefined
   }
   
   export default Producto;

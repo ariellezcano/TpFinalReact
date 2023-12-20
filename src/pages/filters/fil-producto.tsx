@@ -1,7 +1,7 @@
 import UseFilProducto from "./UseFilProducto";
 
 function FilProducto(props) {
-  const { limits,data, pagina, setPage, limit, handleLimitChange } = UseFilProducto();
+  const { limits,data, pagina, setPage, limit, handleLimitChange, handleInputChange, inputValue } = UseFilProducto();
   const dataEnviar = data; // Datos que quieres pasar
 
   // Llamar a la función del padre pasándole los datos
@@ -55,6 +55,8 @@ function FilProducto(props) {
             type="text"
             className="form-control"
             placeholder="Ingrese título"
+            value={inputValue}
+            onChange={handleInputChange}
           />
         </div>
       </div>

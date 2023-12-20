@@ -26,7 +26,7 @@ const ProductoService = {
 
   getId: async (id: unknown) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/products/:${id}`);
+      const response = await axios.get(`${API_BASE_URL}/products/${id}`);
       return response.data;
     } catch (error) {
       throw new Error(`Error al obtener los datos`);
@@ -36,7 +36,7 @@ const ProductoService = {
   post: async (data: unknown) => {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/products/create`,
+        `${API_BASE_URL}/products/`,
         data
       );
       return response.data;
@@ -48,7 +48,7 @@ const ProductoService = {
   put: async (id: number, data: unknown) => {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}/products/edit/:${id}`,
+        `${API_BASE_URL}/products/${id}`,
         data
       );
       return response.data;
