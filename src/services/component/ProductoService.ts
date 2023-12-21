@@ -36,10 +36,10 @@ const ProductoService = {
     }
   },
 
-  post: async (data: unknown) => {
+  post: async (data: FormData) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/products/`, data);
-      console.log("respuesta del post", response.data);
+      console.log("respuesta del post", response);
       return response.data;
     } catch (error) {
       throw new Error(`Error al crear el dato`);

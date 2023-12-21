@@ -76,9 +76,10 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
   }
 
   async function addProducto(newProduct: FormData) {
+    console.log("Datos en el FormData Producto:", [...newProduct.entries()]);
+
     try {
       const addNewProduct = await ProductoService.post(newProduct);
-      console.log("creado", addNewProduct);
       setProducto(addNewProduct);
       Swal.fire({
         title: "Finalizado!",

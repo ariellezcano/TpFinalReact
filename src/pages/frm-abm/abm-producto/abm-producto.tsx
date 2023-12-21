@@ -6,11 +6,12 @@ function AbmProducto() {
   const { id } = useParams();
   const parsedId = id ? parseInt(id, 10) : 0;
 
+  const [images, setImages] = useState([]);
+  const [imageUrl, setImageUrl] = useState("");
   const [editedImages, setEditedImages] = useState<string[]>([]);
 
-  const { action, producto, redireccionar, obtenerProducto } = UseAbmProducto(
-    parsedId
-  );
+  const { action, producto, redireccionar, obtenerProducto } =
+    UseAbmProducto(parsedId);
 
   const [formData, setFormData] = useState({
     nombre: producto?.title || "",
@@ -27,6 +28,14 @@ function AbmProducto() {
     });
   };
 
+  const handleImageAdd = () => {
+    if (imageUrl.trim() !== "") {
+      console.log("imagen",imageUrl)
+      setImages([...images, imageUrl]);
+      setImageUrl(""); // Limpiar el estado después de agregar la URL
+    }
+  };
+
   const handleImageChange = (index, newValue) => {
     const updatedImages = [...editedImages];
     updatedImages[index] = newValue;
@@ -41,8 +50,16 @@ function AbmProducto() {
     nuevoProducto.set("precio", formData.precio);
     nuevoProducto.set("descripcion", formData.descripcion);
 
-    console.log("Datos en el FormData:", [...nuevoProducto.entries()]);
-    await action(parsedId, nuevoProducto);
+    // Iterar sobre las imágenes editadas y agregarlas a FormData
+    editedImages.forEach((imageUrl, index) => {
+      console.log(`Agregando imagen ${index}: ${imageUrl}`);
+      nuevoProducto.append(`imagen${index}`, imageUrl);
+    });
+
+    for (let pair of nuevoProducto.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+    // await action(parsedId, nuevoProducto);
   };
 
   useEffect(() => {
@@ -91,7 +108,7 @@ function AbmProducto() {
             </label>
             <input
               className="form-control border border-primary"
-              type="text"
+              type="number"
               name="precio"
               value={formData.precio}
               required
@@ -114,45 +131,75 @@ function AbmProducto() {
         </div>
         <br />
         <div className="row">
-        {producto?.images.map((imageUrl, index) => (
-          <div className="row mt-3" key={index}>
-            <div className="col-md-12">
-              <h4>Imagen {index + 1}</h4>
-              <div className="col-md-3 mb-3">
-                <img
-                  src={imageUrl}
-                  alt={`Imagen ${index}`}
-                  className="img-fluid"
+          {parsedId === 0 && (
+            <div className="row">
+              <div className="col-md-6">
+                <input
+                  type="text"
+                  className="form-control"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  placeholder="Introduce la URL de la imagen"
                 />
               </div>
-              <input
-                className="form-control border border-primary"
-                type="text"
-                name={`imagen${index}`}
-                value={editedImages[index] || imageUrl}
-                onChange={(e) => handleImageChange(index, e.target.value)}
-              />
-              {/* Otros campos si es necesario para cada imagen */}
+              <div className="col-md-6">
+                <button type="button" className="btn btn-info" onClick={handleImageAdd}>
+                  Agregar Imagen
+                </button>
+              </div>
+              <br />
+              <div className="row">
+                {images.map((image, index) => (
+                  <div key={index}>
+                    <img src={image} alt={`Imagen ${index + 1}`} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-        <div className="row mt-3">
-          <div className="col-md-12">
-            <h4>Imágenes Actuales:</h4>
-            <div className="row">
-              {producto?.images.map((imageUrl, index) => (
-                <div className="col-md-3 mb-3" key={index}>
+          )}
+
+          {producto?.images.map((imageUrl, index) => (
+            <div className="row mt-3" key={index}>
+              <div className="col-md-12">
+                <h4>Imagen {index + 1}</h4>
+                <div className="col-md-3 mb-3">
                   <img
                     src={imageUrl}
                     alt={`Imagen ${index}`}
                     className="img-fluid"
                   />
                 </div>
-              ))}
+                <input
+                  className="form-control border border-primary"
+                  type="text"
+                  name={`imagen${index}`}
+                  value={editedImages[index] || imageUrl}
+                  onChange={(e) => handleImageChange(index, e.target.value)}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {parsedId > 0 && (
+          <div className="row mt-3">
+            <div className="col-md-12">
+              <h4>Imágenes Actuales:</h4>
+              <div className="row">
+                {producto?.images.map((imageUrl, index) => (
+                  <div className="col-md-3 mb-3" key={index}>
+                    <img
+                      src={imageUrl}
+                      alt={`Imagen ${index}`}
+                      className="img-fluid"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
         <hr />
         <div className="row">
           <div className="col-md-12">
