@@ -6,60 +6,48 @@ function AbmCategoria() {
   const { id } = useParams();
   const parsedId = id ? parseInt(id, 10) : 0;
 
-  const { action, categoria, redireccionar, obtenerCategoria } =
-    UseAbmCategoria(parsedId);
+  const { action, categoria, redireccionar, obtenerCategoria } = UseAbmCategoria(
+    parsedId
+  );
 
-  const [nuevasImagenes, setNuevasImagenes] = useState<FileList | null>(null);
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [nuevaImagen, setNuevaImagen] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-
-  console.log("img", previewImages)
-
-  const handleNuevasImagenes = (event) => {
-    const files = event.target.files;
-    setNuevasImagenes(files);
-  
-    // Previsualización de imágenes seleccionadas
-    const previewList = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const imageUrl = URL.createObjectURL(file);
-      previewList.push(imageUrl);
-    }
-    setPreviewImages(previewList);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-  
-    const formData = new FormData(event.target);
-    const nombre = formData.get("nombre")?.toString() || "";
-    const precio = formData.get("precio")?.toString() || "";
-    const descripcion = formData.get("descripcion")?.toString() || "";
-  
-    // Eliminar la imagen original si es necesario
-    formData.delete("imagen");
-    // Agregar las nuevas imágenes al FormData
-    formData.append("nuevasImagenes", nuevasImagenes);
-  
-    // Agregar otros campos al FormData
-    formData.set("nombre", nombre);
-    formData.set("precio", precio);
-    formData.set("descripcion", descripcion);
-  
-    const nuevoProducto = formData; // Enviar formData directamente al hook UseAbmProducto
-  
-    await action(parsedId, nuevoProducto);
-  };
-  
   useEffect(() => {
-    // Función para obtener el producto al cargar el formulario
     const obtenerCategoriaAlCargar = async () => {
       await obtenerCategoria(parsedId);
     };
 
-    obtenerCategoriaAlCargar(); // Llamar a la función al cargar el componente
+    obtenerCategoriaAlCargar();
   }, [parsedId]);
+
+  useEffect(() => {
+    if (categoria?.image && typeof categoria.image === 'string') {
+      setPreviewImage(categoria.image);
+    }
+  }, [categoria?.image]);
+
+  const handleNuevaImagen = (event) => {
+    const file = event.target.files[0];
+    setNuevaImagen(file);
+
+    const imageUrl = URL.createObjectURL(file);
+    setPreviewImage(imageUrl);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const nombre = formData.get("nombre")?.toString() || "";
+
+    formData.delete("imagen");
+    formData.append("nuevaImagen", nuevaImagen);
+    formData.set("nombre", nombre);
+
+    const nuevaCategoria = formData;
+    await action(parsedId, nuevaCategoria);
+  };
 
   return (
     <div className="AbmProducto container">
@@ -96,45 +84,38 @@ function AbmCategoria() {
             <input
               className="form-control border border-primary"
               type="file"
-              name="nuevasImagenes"
+              name="nuevaImagen"
               id=""
-              onChange={handleNuevasImagenes}
+              onChange={handleNuevaImagen}
             />
           </div>
         </div>
-        {/* Mostrar los nombres de archivo de las imágenes seleccionadas */}
-        {previewImages.length > 0 && (
+        {previewImage && (
           <div className="row mt-3">
             <div className="col-md-12">
-              <h4>Imágenes seleccionadas:</h4>
-              <div className="row">
-                {previewImages.map((imageUrl, index) => (
-                  <div className="col-md-3 mb-3" key={index}>
-                    <img
-                      src={imageUrl}
-                      alt={`Imagen ${index}`}
-                      className="img-fluid"
-                    />
-                  </div>
-                ))}
-              </div>
+              <h4>Nueva Imagen seleccionada:</h4>
+              <img
+                src={previewImage}
+                alt="Nueva Imagen"
+                className="img-fluid"
+                style={{ width: '200px', height: '200px' }}
+              />
             </div>
           </div>
         )}
         <div className="row mt-3">
           <div className="col-md-12">
             <h4>Imágenes Actuales:</h4>
-            <div className="row">
-              {categoria?.image.map((imageUrl, index) => (
-                <div className="col-md-3 mb-3" key={index}>
-                  <img
-                    src={imageUrl}
-                    alt={`Imagen ${index}`}
-                    className="img-fluid"
-                  />
-                </div>
-              ))}
-            </div>
+            {typeof categoria?.image === 'string' && (
+              <div className="col-md-3 mb-3">
+                <img
+                  src={categoria.image}
+                  alt="Imagen Actual"
+                  className="img-fluid"
+                  style={{ width: '200px', height: '200px' }}
+                />
+              </div>
+            )}
           </div>
         </div>
         <br />
@@ -158,4 +139,5 @@ function AbmCategoria() {
     </div>
   );
 }
+
 export default AbmCategoria;

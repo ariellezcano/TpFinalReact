@@ -6,60 +6,58 @@ function AbmProducto() {
   const { id } = useParams();
   const parsedId = id ? parseInt(id, 10) : 0;
 
-  const { action, producto, redireccionar, obtenerProducto } =
-    UseAbmProducto(parsedId);
+  const [editedImages, setEditedImages] = useState<string[]>([]);
 
-  const [nuevasImagenes, setNuevasImagenes] = useState<FileList | null>(null);
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const { action, producto, redireccionar, obtenerProducto } = UseAbmProducto(
+    parsedId
+  );
 
+  const [formData, setFormData] = useState({
+    nombre: producto?.title || "",
+    precio: producto?.price || "",
+    descripcion: producto?.description || "",
+  });
 
-  console.log("img", previewImages)
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    console.log(`Campo ${name} cambiado a: ${value}`);
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-  const handleNuevasImagenes = (event) => {
-    const files = event.target.files;
-    setNuevasImagenes(files);
-  
-    // Previsualización de imágenes seleccionadas
-    const previewList = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const imageUrl = URL.createObjectURL(file);
-      previewList.push(imageUrl);
-    }
-    setPreviewImages(previewList);
+  const handleImageChange = (index, newValue) => {
+    const updatedImages = [...editedImages];
+    updatedImages[index] = newValue;
+    setEditedImages(updatedImages);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    const formData = new FormData(event.target);
-    const nombre = formData.get("nombre")?.toString() || "";
-    const precio = formData.get("precio")?.toString() || "";
-    const descripcion = formData.get("descripcion")?.toString() || "";
-  
-    // Eliminar la imagen original si es necesario
-    formData.delete("imagen");
-    // Agregar las nuevas imágenes al FormData
-    formData.append("nuevasImagenes", nuevasImagenes);
-  
-    // Agregar otros campos al FormData
-    formData.set("nombre", nombre);
-    formData.set("precio", precio);
-    formData.set("descripcion", descripcion);
-  
-    const nuevoProducto = formData; // Enviar formData directamente al hook UseAbmProducto
-  
+
+    const nuevoProducto = new FormData(event.target);
+    nuevoProducto.set("nombre", formData.nombre);
+    nuevoProducto.set("precio", formData.precio);
+    nuevoProducto.set("descripcion", formData.descripcion);
+
+    console.log("Datos en el FormData:", [...nuevoProducto.entries()]);
     await action(parsedId, nuevoProducto);
   };
-  
-  useEffect(() => {
-    // Función para obtener el producto al cargar el formulario
-    const obtenerProductoAlCargar = async () => {
-      await obtenerProducto(parsedId);
-    };
 
-    obtenerProductoAlCargar(); // Llamar a la función al cargar el componente
+  useEffect(() => {
+    obtenerProducto(parsedId);
   }, [parsedId]);
+
+  useEffect(() => {
+    if (parsedId > 0 && producto) {
+      setFormData({
+        nombre: producto.title || "",
+        precio: producto.price || "",
+        descripcion: producto.description || "",
+      });
+    }
+  }, [parsedId, producto]);
 
   return (
     <div className="AbmProducto container">
@@ -82,8 +80,9 @@ function AbmProducto() {
               className="form-control border border-primary"
               type="text"
               name="nombre"
-              value={producto?.title}
+              value={formData.nombre}
               required
+              onChange={handleInputChange}
             />
           </div>
           <div className="col-md-6">
@@ -94,8 +93,9 @@ function AbmProducto() {
               className="form-control border border-primary"
               type="text"
               name="precio"
-              value={producto?.price}
+              value={formData.precio}
               required
+              onChange={handleInputChange}
             />
           </div>
         </div>
@@ -107,46 +107,36 @@ function AbmProducto() {
             <textarea
               className="form-control border border-primary"
               name="descripcion"
-              id=""
-              value={producto?.descripcion}
+              value={formData.descripcion}
+              onChange={handleInputChange}
             ></textarea>
           </div>
         </div>
         <br />
         <div className="row">
-          <div className="col-md-12">
-            <label htmlFor="">
-              <b>Editar/Seleccionar Imagen:</b>
-            </label>
-            <input
-              className="form-control border border-primary"
-              type="file"
-              name="nuevasImagenes"
-              id=""
-              multiple // Permite seleccionar múltiples archivos
-              onChange={handleNuevasImagenes}
-            />
-          </div>
-        </div>
-        {/* Mostrar los nombres de archivo de las imágenes seleccionadas */}
-        {previewImages.length > 0 && (
-          <div className="row mt-3">
+        {producto?.images.map((imageUrl, index) => (
+          <div className="row mt-3" key={index}>
             <div className="col-md-12">
-              <h4>Imágenes seleccionadas:</h4>
-              <div className="row">
-                {previewImages.map((imageUrl, index) => (
-                  <div className="col-md-3 mb-3" key={index}>
-                    <img
-                      src={imageUrl}
-                      alt={`Imagen ${index}`}
-                      className="img-fluid"
-                    />
-                  </div>
-                ))}
+              <h4>Imagen {index + 1}</h4>
+              <div className="col-md-3 mb-3">
+                <img
+                  src={imageUrl}
+                  alt={`Imagen ${index}`}
+                  className="img-fluid"
+                />
               </div>
+              <input
+                className="form-control border border-primary"
+                type="text"
+                name={`imagen${index}`}
+                value={editedImages[index] || imageUrl}
+                onChange={(e) => handleImageChange(index, e.target.value)}
+              />
+              {/* Otros campos si es necesario para cada imagen */}
             </div>
           </div>
-        )}
+        ))}
+      </div>
         <div className="row mt-3">
           <div className="col-md-12">
             <h4>Imágenes Actuales:</h4>
@@ -163,7 +153,7 @@ function AbmProducto() {
             </div>
           </div>
         </div>
-        <br />
+        <hr />
         <div className="row">
           <div className="col-md-12">
             <div className="d-grid gap-2">

@@ -46,9 +46,11 @@ const ProductoService = {
     }
   },
 
-  put: async (id: number, data: unknown) => {
+  put: async (id: number, data: FormData) => {
     try {
       const response = await axios.put(`${API_BASE_URL}/products/${id}`, data);
+      //console.log("Datos en el FormData2:", [...data.entries()]);
+      console.log("response:", response);
       return response.data;
     } catch (error) {
       throw new Error(`Error al actualizar el producto`);

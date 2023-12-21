@@ -2,7 +2,7 @@ class Producto {
     id?: number
     title!: string
     price!: string
-    descripcion!: string
+    description!: string
     category?: {
         id: number
         name: string

@@ -46,10 +46,10 @@ const CategoriaService = {
 
   put: async (id: number,data: unknown) => {
     try {
-      const response = await axios.put(`${API_BASE_URL}/categories/edit/:${id}`, data);
+      const response = await axios.put(`${API_BASE_URL}/categories/${id}`, data);
       return response.data;
     } catch (error) {
-      throw new Error(`Error al actualizar el producto`);
+      throw new Error(`Error al actualizar la categoría`);
     }
   },
 

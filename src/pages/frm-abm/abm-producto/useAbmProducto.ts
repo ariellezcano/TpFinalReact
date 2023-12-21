@@ -57,10 +57,19 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
   async function updateProduct(id: number, updatedProduct: FormData) {
     try {
       const update = await ProductoService.put(id, updatedProduct);
-      console.log("update", update)
+      //alert("llegue")
       // Actualizar el estado del producto después de la actualización exitosa
       setProducto(update);
-      redireccionar()
+      Swal.fire({
+        title: "¡Finalizado!",
+        text: "¡Producto Actualizado Correctamente!",
+        icon: "success",
+        timer: 3000, // Tiempo en milisegundos (en este caso, 3 segundos)
+        showConfirmButton: false
+      });
+
+      //redireccionar()
+      
     } catch (error) {
       console.log(error)
     }
@@ -71,6 +80,11 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
       const addNewProduct = await ProductoService.post(newProduct);
       console.log("creado", addNewProduct);
       setProducto(addNewProduct);
+      Swal.fire({
+        title: "Finalizado!",
+        text: "Producto Creado Correctamente!",
+        icon: "success"
+      });
     } catch (error) {
       // Manejar errores aquí
     }

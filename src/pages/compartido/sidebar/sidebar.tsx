@@ -16,7 +16,7 @@ function Sidebars() {
         </SubMenu> */}
         <MenuItem> Usuarios </MenuItem>
 
-        <MenuItem component={<Link to="/" />}> Categorías </MenuItem>
+        <MenuItem component={<Link to="/categorias" />}> Categorías </MenuItem>
         <MenuItem component={<Link to="/productos" />}> Productos </MenuItem>
         {/* <MenuItem component={<Link to="/documentation" />}>
           {" "}

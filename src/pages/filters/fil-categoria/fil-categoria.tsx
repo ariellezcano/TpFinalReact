@@ -18,6 +18,7 @@ function FilCategoria(props) {
   return (
     <div className="">
       <div className="row">
+      <div className="col-md-3"></div>
         <div className="col-md-2">
           <select
             value={limit}
@@ -62,6 +63,7 @@ function FilCategoria(props) {
             </ul>
           </nav>
         </div>
+        <div className="col-md-3"></div>
         {/* <div className="col-md-6">
           <input
             type="text"
