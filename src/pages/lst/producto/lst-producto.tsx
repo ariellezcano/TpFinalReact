@@ -37,7 +37,7 @@ function LstProducto() {
         <table className="table">
           <thead className=" table-primary">
             <tr>
-              <th scope="col">Producto</th>
+              {/* <th scope="col">Producto</th> */}
               <th scope="col">Título</th>
               <th scope="col">Precio</th>
               <th scope="col">Categoría</th>
@@ -47,9 +47,9 @@ function LstProducto() {
           <tbody>
             {dataRecibida.map((item: Producto) => (
               <tr key={item.id}>
-                <td>
+                {/* <td>
                   <img src={item.images} alt="" width="50" height="50" />
-                  </td>
+                  </td> */}
                 <td>{item.title}</td>
                 <td>{item.price}</td>
                 <td>{item.category?.name}</td>

@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import Producto from "../../models/producto";
+import Swal from "sweetalert2";
 
 const API_BASE_URL = "https://api.escuelajs.co/api/v1";
 
 const ProductoService = {
-  
   getPagination: async (offset: number, limit: number): Promise<Producto[]> => {
     try {
       const response: AxiosResponse<Producto[]> = await axios.get(
@@ -40,7 +40,16 @@ const ProductoService = {
     try {
       const response = await axios.post(`${API_BASE_URL}/products/`, data);
       console.log("respuesta del post", response);
-      return response.data;
+      if (response.status == 200) {
+        Swal.fire({
+          title: "¡Finalizado!",
+          text: "¡Producto Actualizado Correctamente!",
+          icon: "success",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+        return response.data;
+      }
     } catch (error) {
       throw new Error(`Error al crear el dato`);
     }
@@ -50,8 +59,17 @@ const ProductoService = {
     try {
       const response = await axios.put(`${API_BASE_URL}/products/${id}`, data);
       //console.log("Datos en el FormData2:", [...data.entries()]);
-      console.log("response:", response);
-      return response.data;
+      console.log("responseee:", response);
+      if (response.status == 200) {
+        Swal.fire({
+          title: "¡Finalizado!",
+          text: "¡Producto Actualizado Correctamente!",
+          icon: "success",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+        return response.data;
+      }
     } catch (error) {
       throw new Error(`Error al actualizar el producto`);
     }

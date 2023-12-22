@@ -30,7 +30,7 @@ function AbmProducto() {
 
   const handleImageAdd = () => {
     if (imageUrl.trim() !== "") {
-      console.log("imagen",imageUrl)
+      console.log("imagen", imageUrl);
       setImages([...images, imageUrl]);
       setImageUrl(""); // Limpiar el estado después de agregar la URL
     }
@@ -45,21 +45,29 @@ function AbmProducto() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const nuevoProducto = new FormData(event.target);
-    nuevoProducto.set("nombre", formData.nombre);
-    nuevoProducto.set("precio", formData.precio);
-    nuevoProducto.set("descripcion", formData.descripcion);
+    let nuevoProducto;
 
-    // Iterar sobre las imágenes editadas y agregarlas a FormData
-    editedImages.forEach((imageUrl, index) => {
-      console.log(`Agregando imagen ${index}: ${imageUrl}`);
-      nuevoProducto.append(`imagen${index}`, imageUrl);
-    });
-
-    for (let pair of nuevoProducto.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
+    if (parsedId === 0) {
+      nuevoProducto = {
+        title: formData.nombre,
+        price: parseFloat(formData.precio),
+        description: formData.descripcion,
+        categoryId: 1,
+        images: parsedId === 0 ? images : editedImages,
+      };
+    } else {
+      nuevoProducto = {
+        title: formData.nombre,
+        price: parseFloat(formData.precio),
+        description: formData.descripcion,
+        //category: 1,
+        images: parsedId === 0 ? images : editedImages,
+      };
     }
-    // await action(parsedId, nuevoProducto);
+
+    console.log("producto enviado", nuevoProducto);
+
+    await action(parsedId, nuevoProducto);
   };
 
   useEffect(() => {
@@ -143,7 +151,11 @@ function AbmProducto() {
                 />
               </div>
               <div className="col-md-6">
-                <button type="button" className="btn btn-info" onClick={handleImageAdd}>
+                <button
+                  type="button"
+                  className="btn btn-info"
+                  onClick={handleImageAdd}
+                >
                   Agregar Imagen
                 </button>
               </div>
@@ -181,7 +193,7 @@ function AbmProducto() {
           ))}
         </div>
 
-        {parsedId > 0 && (
+        {/* {parsedId > 0 && (
           <div className="row mt-3">
             <div className="col-md-12">
               <h4>Imágenes Actuales:</h4>
@@ -198,7 +210,7 @@ function AbmProducto() {
               </div>
             </div>
           </div>
-        )}
+        )} */}
 
         <hr />
         <div className="row">

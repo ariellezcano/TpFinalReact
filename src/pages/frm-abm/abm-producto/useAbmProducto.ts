@@ -14,15 +14,17 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
   async function action(id: number, item: FormData) {
     try {
       if (id > 0) {
+        alert("llegue al put")
         await updateProduct(id, item);
       } else {
+        alert("llegue al post")
         await addProducto(item);
       }
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Verifique el error!",
+        text: "Verifique el error! "+ error,
       });
     }
   }
@@ -35,13 +37,10 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
         setProducto(fetchedProducto);
       }
     } catch (error) {
-      console.error('Error al obtener el producto:', error);
-      // Aquí puedes agregar la lógica para mostrar un mensaje de error al usuario
-      // Por ejemplo, usando una librería como Swal para mostrar una alerta:
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Hubo un problema al obtener los datos del producto",
+        text: "Hubo un problema al obtener los datos del producto! " + error,
       });
     }
   }
@@ -55,20 +54,20 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
     }, [id]);
 
   async function updateProduct(id: number, updatedProduct: FormData) {
+    console.log("update",updatedProduct);
     try {
       const update = await ProductoService.put(id, updatedProduct);
-      //alert("llegue")
-      // Actualizar el estado del producto después de la actualización exitosa
+      console.log("update", update);
       setProducto(update);
-      Swal.fire({
-        title: "¡Finalizado!",
-        text: "¡Producto Actualizado Correctamente!",
-        icon: "success",
-        timer: 3000, // Tiempo en milisegundos (en este caso, 3 segundos)
-        showConfirmButton: false
-      });
+      // Swal.fire({
+      //   title: "¡Finalizado!",
+      //   text: "¡Producto Actualizado Correctamente!",
+      //   icon: "success",
+      //   timer: 3000,
+      //   showConfirmButton: false
+      // });
 
-      //redireccionar()
+      redireccionar()
       
     } catch (error) {
       console.log(error)
@@ -76,18 +75,20 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
   }
 
   async function addProducto(newProduct: FormData) {
-    console.log("Datos en el FormData Producto:", [...newProduct.entries()]);
 
     try {
       const addNewProduct = await ProductoService.post(newProduct);
+      console.log(addNewProduct)
       setProducto(addNewProduct);
-      Swal.fire({
-        title: "Finalizado!",
-        text: "Producto Creado Correctamente!",
-        icon: "success"
-      });
+      // Swal.fire({
+      //   title: "Finalizado!",
+      //   text: "Producto Creado Correctamente!",
+      //   timer: 3000,
+      //   icon: "success"
+      // });
+      redireccionar();
     } catch (error) {
-      // Manejar errores aquí
+       console.error("error en el post", error)
     }
   }
 
