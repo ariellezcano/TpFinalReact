@@ -44,32 +44,33 @@ function AbmProducto() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     let nuevoProducto;
+  
+    const imagesEdited = JSON.stringify(images) !== JSON.stringify(producto?.images);
 
-    if (parsedId === 0) {
-      nuevoProducto = {
-        title: formData.nombre,
-        price: parseFloat(formData.precio),
-        description: formData.descripcion,
-        categoryId: 1,
-        images: parsedId === 0 ? images : editedImages,
-      };
-    } else {
-      nuevoProducto = {
-        title: formData.nombre,
-        price: parseFloat(formData.precio),
-        description: formData.descripcion,
-        //category: 1,
-        images: parsedId === 0 ? images : editedImages,
-      };
-    }
-
-    console.log("producto enviado", nuevoProducto);
-
+  if (parsedId === 0) {
+    nuevoProducto = {
+      title: formData.nombre,
+      price: parseFloat(formData.precio),
+      description: formData.descripcion,
+      categoryId: 1,
+      images: images, // Utilizamos las imágenes proporcionadas para un nuevo producto
+    };
+  } else {
+    nuevoProducto = {
+      title: formData.nombre,
+      price: parseFloat(formData.precio),
+      description: formData.descripcion,
+      images: imagesEdited ? images : producto?.images, // Usamos las imágenes editadas o las anteriores
+    };
+  }
+  
+    console.log("Producto enviado", nuevoProducto);
+  
     await action(parsedId, nuevoProducto);
   };
-
+  
   useEffect(() => {
     obtenerProducto(parsedId);
   }, [parsedId]);
