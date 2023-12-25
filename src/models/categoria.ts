@@ -2,7 +2,7 @@ class Categoria{
 
     id!: number
     name!: string
-    image!: unknown | undefined
+    image!: string
 }
 
 export default Categoria;

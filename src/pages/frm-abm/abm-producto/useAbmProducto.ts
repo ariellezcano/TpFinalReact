@@ -17,7 +17,6 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
         alert("llegue al put")
         await updateProduct(id, item);
       } else {
-        alert("llegue al post")
         await addProducto(item);
       }
     } catch (error) {
@@ -59,13 +58,13 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
       const update = await ProductoService.put(id, updatedProduct);
       console.log("update", update);
       setProducto(update);
-      // Swal.fire({
-      //   title: "¡Finalizado!",
-      //   text: "¡Producto Actualizado Correctamente!",
-      //   icon: "success",
-      //   timer: 3000,
-      //   showConfirmButton: false
-      // });
+      Swal.fire({
+        title: "¡Finalizado!",
+        text: "¡Producto Actualizado Correctamente!",
+        icon: "success",
+        timer: 3000,
+        showConfirmButton: false
+      });
 
       redireccionar()
       

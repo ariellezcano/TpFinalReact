@@ -16,10 +16,10 @@ const CategoriaService = {
     }
   },
 
-  getFilter: async (criterio: string): Promise<Categoria[]> => {
+  getAll: async (): Promise<Categoria[]> => {
     try {
       const response: AxiosResponse<Categoria[]> = await axios.get(
-        `${API_BASE_URL}/categories/?title=${criterio}`
+        `${API_BASE_URL}/categories`
       );
       return response.data;
     } catch (error) {

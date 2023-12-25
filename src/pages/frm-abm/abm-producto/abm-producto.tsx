@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
 import UseAbmProducto from "./useAbmProducto";
 import { useEffect, useState } from "react";
+import ComboCategoria from "../../component/combo-categoria/combo-categoria";
 
 function AbmProducto() {
   const { id } = useParams();
   const parsedId = id ? parseInt(id, 10) : 0;
 
+  const [dataRecibida, setReceivedData] = useState([]);
   const [images, setImages] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const [editedImages, setEditedImages] = useState<string[]>([]);
@@ -37,40 +39,63 @@ function AbmProducto() {
   };
 
   const handleImageChange = (index, newValue) => {
-    const updatedImages = [...editedImages];
-    updatedImages[index] = newValue;
-    setEditedImages(updatedImages);
+    setEditedImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      updatedImages[index] = newValue;
+      return updatedImages;
+    });
   };
+
+  useEffect(() => {
+    if (parsedId > 0 && producto) {
+      setFormData({
+        nombre: producto.title || "",
+        precio: producto.price || "",
+        descripcion: producto.description || "",
+      });
+
+      // Si el producto tiene imágenes, inicializa 'images' y 'editedImages' con esas imágenes
+      if (producto.images && producto.images.length > 0) {
+        setImages([...producto.images]);
+        setEditedImages([...producto.images]);
+      }
+    }
+  }, [parsedId, producto]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
   
     let nuevoProducto;
+    let imagesToSend = producto?.images || [];
   
-    const imagesEdited = JSON.stringify(images) !== JSON.stringify(producto?.images);
-
-  if (parsedId === 0) {
-    nuevoProducto = {
-      title: formData.nombre,
-      price: parseFloat(formData.precio),
-      description: formData.descripcion,
-      categoryId: 1,
-      images: images, // Utilizamos las imágenes proporcionadas para un nuevo producto
-    };
-  } else {
-    nuevoProducto = {
-      title: formData.nombre,
-      price: parseFloat(formData.precio),
-      description: formData.descripcion,
-      images: imagesEdited ? images : producto?.images, // Usamos las imágenes editadas o las anteriores
-    };
-  }
+    if (parsedId === 0) {
+      nuevoProducto = {
+        title: formData.nombre,
+        price: parseFloat(formData.precio),
+        description: formData.descripcion,
+        categoryId: dataRecibida,
+        images: images, // Envía el array de imágenes tal como está para un nuevo producto
+      };
+    } else {
+      nuevoProducto = {
+        title: formData.nombre,
+        price: parseFloat(formData.precio),
+        description: formData.descripcion,
+        images: editedImages.length > 0 ? editedImages : imagesToSend, // Utiliza editedImages si ha habido ediciones, de lo contrario, usa las imágenes originales del producto
+      };
+    }
   
     console.log("Producto enviado", nuevoProducto);
   
     await action(parsedId, nuevoProducto);
   };
+
+
+  const onDataChangeSelect = (data) => {
+    setReceivedData(data); // Actualizar el estado con los datos recibidos del select
+  };
   
+
   useEffect(() => {
     obtenerProducto(parsedId);
   }, [parsedId]);
@@ -81,6 +106,7 @@ function AbmProducto() {
         nombre: producto.title || "",
         precio: producto.price || "",
         descripcion: producto.description || "",
+        //categoria: producto.category?.id || null
       });
     }
   }, [parsedId, producto]);
@@ -123,6 +149,13 @@ function AbmProducto() {
               required
               onChange={handleInputChange}
             />
+          </div>
+        </div>
+        
+        <div className="row">
+          <label htmlFor=""><b>Categoría</b></label>
+          <div className="col-md-12">
+            <ComboCategoria onDataChange={onDataChangeSelect}/>
           </div>
         </div>
         <div className="row">

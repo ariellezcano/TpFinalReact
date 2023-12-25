@@ -14,8 +14,10 @@ function UseAbmCategoria({ id }: UseAbmProductoProps) {
   async function action(id: number, item: FormData) {
     try {
       if (id > 0) {
+        alert("modificar")
         await updateCategoria(id, item);
       } else {
+        alert("crear")
         await addCategoria(item);
       }
     } catch (error) {
@@ -58,7 +60,6 @@ function UseAbmCategoria({ id }: UseAbmProductoProps) {
     try {
       const update = await CategoriaService.put(id, updatedProduct);
       console.log("update", update)
-      // Actualizar el estado del producto después de la actualización exitosa
       setCategoria(update);
       redireccionar()
     } catch (error) {
@@ -69,8 +70,9 @@ function UseAbmCategoria({ id }: UseAbmProductoProps) {
   async function addCategoria(newCategoria: FormData) {
     try {
       const addNewCategoria = await CategoriaService.post(newCategoria);
-      console.log("creado", addNewCategoria);
+      //console.log("creado", addNewCategoria);
       setCategoria(addNewCategoria);
+      redireccionar()
     } catch (error) {
       // Manejar errores aquí
     }
