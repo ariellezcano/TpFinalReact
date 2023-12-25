@@ -1,12 +1,12 @@
 import UseComboCategoria from "./useComboCategoria";
 
-function ComboCategoria(props) {
+function ComboCategoria({ onDataChange, selectedCategory }) {
   const { categorias } = UseComboCategoria();
 
   const handleCategoriaChange = (event) => {
+    console.log("evento de categoria", event.target.value)
     const selectedCategoryId = event.target.value;
-    console.log("Categoría seleccionada:", selectedCategoryId);
-    props.onDataChange(selectedCategoryId);
+    onDataChange(selectedCategoryId);
   };
 
 
@@ -17,6 +17,7 @@ function ComboCategoria(props) {
           className="form-select border border-primary"
           aria-label="Default select example"
           onChange={handleCategoriaChange}
+          defaultValue={selectedCategory}
         >
           <option value="" disabled selected>
             Selecciona una categoría

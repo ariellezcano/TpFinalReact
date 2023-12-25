@@ -1,13 +1,11 @@
+import Categoria from "./categoria"
+
 class Producto {
     id?: number
     title!: string
     price!: string
     description!: string
-    category?: {
-        id: number
-        name: string
-        image: unknown
-    }
+    category!: Categoria
     images!:unknown | undefined
   }
   

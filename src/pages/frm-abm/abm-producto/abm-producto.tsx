@@ -7,6 +7,7 @@ function AbmProducto() {
   const { id } = useParams();
   const parsedId = id ? parseInt(id, 10) : 0;
 
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [dataRecibida, setReceivedData] = useState([]);
   const [images, setImages] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
@@ -92,6 +93,7 @@ function AbmProducto() {
 
 
   const onDataChangeSelect = (data) => {
+    console.log("onDataChangeSelect", data)
     setReceivedData(data); // Actualizar el estado con los datos recibidos del select
   };
   
@@ -106,8 +108,10 @@ function AbmProducto() {
         nombre: producto.title || "",
         precio: producto.price || "",
         descripcion: producto.description || "",
-        //categoria: producto.category?.id || null
       });
+    }
+    if (producto?.category?.id !== undefined && producto?.category?.id > 0) {
+      setSelectedCategory(producto.category.id);
     }
   }, [parsedId, producto]);
 
@@ -155,7 +159,7 @@ function AbmProducto() {
         <div className="row">
           <label htmlFor=""><b>Categoría</b></label>
           <div className="col-md-12">
-            <ComboCategoria onDataChange={onDataChangeSelect}/>
+            <ComboCategoria onDataChange={onDataChangeSelect} selectedCategory={selectedCategory}/>
           </div>
         </div>
         <div className="row">
