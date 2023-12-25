@@ -17,7 +17,7 @@ function ComboCategoria({ onDataChange, selectedCategory }) {
           className="form-select border border-primary"
           aria-label="Default select example"
           onChange={handleCategoriaChange}
-          defaultValue={selectedCategory}
+          value={selectedCategory}
         >
           <option value="" disabled selected>
             Selecciona una categoría
