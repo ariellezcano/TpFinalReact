@@ -6,12 +6,12 @@ import AbmCategoria from "../frm-abm/abm-categoria/abm-categoria";
 import PantallaPrincipal from "../component/principal/principal";
 import LstUsuario from "../lst/usuario/lst-usuario";
 import AbmUsuario from "../frm-abm/abm-usuario/abm-usuario";
-import Login from "../login/login";
+// import Login from "../login/login";
 
 function Rutas() {
   return (
     <Routes>
-       <Route path="/" Component={Login} />
+       {/* <Route path="/" Component={Login} /> */}
       <Route path="/principal" Component={PantallaPrincipal} />
       <Route path="/usuarios" Component={LstUsuario} />
       <Route path="/detalle-usuario/:id" Component={AbmUsuario} />
