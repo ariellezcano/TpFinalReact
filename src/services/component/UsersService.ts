@@ -65,14 +65,6 @@ const UsuarioService = {
     }
   },
 
-  //   delete: async (endpoint) => {
-  //     try {
-  //       const response = await axios.delete(`${API_BASE_URL}/${endpoint}`);
-  //       return response.data;
-  //     } catch (error) {
-  //       throw new Error(`Error deleting data at ${endpoint}: ${error.message}`);
-  //     }
-  //   },
 };
 
 export default UsuarioService;

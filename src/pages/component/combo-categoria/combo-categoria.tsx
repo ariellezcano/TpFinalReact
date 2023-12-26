@@ -1,9 +1,16 @@
+import { ChangeEvent } from "react";
 import UseComboCategoria from "./useComboCategoria";
 
-function ComboCategoria({ onDataChange, selectedCategory }) {
+interface ComboCategoriaProps {
+  onDataChange: (selectedCategoryId: string) => void;
+  selectedCategory: number;
+  // Otras props si las hubiera
+}
+
+function ComboCategoria({ onDataChange, selectedCategory }: ComboCategoriaProps) {
   const { categorias } = UseComboCategoria();
 
-  const handleCategoriaChange = (event) => {
+  const handleCategoriaChange = (event:  ChangeEvent<HTMLSelectElement>) => {
     console.log("evento de categoria", event.target.value)
     const selectedCategoryId = event.target.value;
     onDataChange(selectedCategoryId);

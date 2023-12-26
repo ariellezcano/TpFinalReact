@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import UsuarioService from "../../../services/component/usersService";
 import Usuario from "../../../models/usuarios";
+import UsuarioService from "../../../services/component/UsersService";
+
 
 function UseFilUsuario() {
   const [data, setData] = useState<Usuario[]>([]);

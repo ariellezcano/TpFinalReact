@@ -1,6 +1,11 @@
+import Categoria from "../../../models/categoria";
 import UseFilCategoria from "./useFilCategoria";
 
-function FilCategoria(props) {
+interface FilCategoriaProps {
+  onDataChange: (data: Categoria[]) => void;
+}
+
+function FilCategoria(props: FilCategoriaProps) {
   const {
     limits,
     data,
@@ -64,15 +69,6 @@ function FilCategoria(props) {
           </nav>
         </div>
         <div className="col-md-3"></div>
-        {/* <div className="col-md-6">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Ingrese título"
-            value={inputValue}
-            onChange={handleInputChange}
-          />
-        </div> */}
       </div>
     </div>
   );
