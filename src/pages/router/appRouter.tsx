@@ -12,7 +12,7 @@ function Rutas() {
   return (
     <Routes>
        {/* <Route path="/" Component={Login} /> */}
-      <Route path="/principal" Component={PantallaPrincipal} />
+      <Route path="/" Component={PantallaPrincipal} />
       <Route path="/usuarios" Component={LstUsuario} />
       <Route path="/detalle-usuario/:id" Component={AbmUsuario} />
       <Route path="/categorias" Component={LstCategoria} />
