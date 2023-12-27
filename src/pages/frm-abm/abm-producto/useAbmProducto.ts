@@ -11,7 +11,7 @@ interface UseAbmProductoProps {
 function UseAbmProducto({ id }: UseAbmProductoProps) {
   const [producto, setProducto] = useState<Producto | null>(null);
 
-  async function action(id: number, item: FormData) {
+  async function action(id: number, item: Producto) {
     try {
       if (id > 0) {
         alert("llegue al put")
@@ -52,7 +52,7 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
       }
     }, [id]);
 
-  async function updateProduct(id: number, updatedProduct: FormData) {
+  async function updateProduct(id: number, updatedProduct: Producto) {
     console.log("update",updatedProduct);
     try {
       const update = await ProductoService.put(id, updatedProduct);
@@ -73,19 +73,19 @@ function UseAbmProducto({ id }: UseAbmProductoProps) {
     }
   }
 
-  async function addProducto(newProduct: FormData) {
+  async function addProducto(newProduct: Producto) {
 
     try {
       const addNewProduct = await ProductoService.post(newProduct);
       console.log(addNewProduct)
       setProducto(addNewProduct);
-      // Swal.fire({
-      //   title: "Finalizado!",
-      //   text: "Producto Creado Correctamente!",
-      //   timer: 3000,
-      //   icon: "success"
-      // });
       redireccionar();
+      Swal.fire({
+        title: "Finalizado!",
+        text: "Producto Creado Correctamente!",
+        timer: 3000,
+        icon: "success"
+      });
     } catch (error) {
        console.error("error en el post", error)
     }

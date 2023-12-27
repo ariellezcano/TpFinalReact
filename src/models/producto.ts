@@ -5,8 +5,9 @@ class Producto {
     title!: string
     price!: string
     description!: string
-    category!: Categoria
-    images!:unknown | undefined
+    categoryId?: unknown
+    category?: Categoria
+    images!:string[]
   }
   
   export default Producto;

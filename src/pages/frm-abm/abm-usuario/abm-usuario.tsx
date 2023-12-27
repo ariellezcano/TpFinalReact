@@ -1,16 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UseAbmUsuario from "./useAbmUsuario";
+import Usuario from "../../../models/usuarios";
 
 function AbmUsuario() {
   const { id } = useParams();
   const parsedId = id ? parseInt(id, 10) : 0;
 
   const { action, usuario, redireccionar, obtenerUsuario } =
-    UseAbmUsuario(parsedId);
+    UseAbmUsuario({ id: parsedId });
 
   const [email, setEmail] = useState("");
- // const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [nombre, setNombre] = useState("");
   const [imagen, setImagen] = useState("");
@@ -31,15 +31,14 @@ function AbmUsuario() {
     }
   }, [usuario]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const nuevoUsuario = {
+    const nuevoUsuario: Usuario = {
       email: email,
-      //password: password,
       name: nombre,
       role: role,
-      image: imagen,
+      avatar: imagen,
     };
 
     await action(parsedId, nuevoUsuario);

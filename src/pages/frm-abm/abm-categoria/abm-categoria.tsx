@@ -6,9 +6,9 @@ function AbmCategoria() {
   const { id } = useParams();
   const parsedId = id ? parseInt(id, 10) : 0;
 
-  const { action, categoria, redireccionar, obtenerCategoria } = UseAbmCategoria(
-    parsedId
-  );
+  const { action, categoria, redireccionar, obtenerCategoria } = UseAbmCategoria({
+    id: parsedId,
+  });
 
   const [nombre, setNombre] = useState("");
   const [imagen, setImagen] = useState("");
@@ -29,13 +29,12 @@ function AbmCategoria() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const nuevaCategoria = {
-      name: nombre,
-      image: imagen,
-    };
-
-    await action(parsedId, nuevaCategoria);
+  
+    const formData = new FormData();
+    formData.append('name', nombre);
+    formData.append('image', imagen);
+  
+    await action(parsedId, formData);
   };
 
   return (

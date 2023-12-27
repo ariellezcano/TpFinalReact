@@ -8,13 +8,13 @@ function AbmProducto() {
   const parsedId = id ? parseInt(id, 10) : 0;
 
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [dataRecibida, setReceivedData] = useState([]);
-  const [images, setImages] = useState([]);
+  const [dataRecibida, setReceivedData] = useState<string>();
+  const [images, setImages] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [editedImages, setEditedImages] = useState<string[]>([]);
 
   const { action, producto, redireccionar, obtenerProducto } =
-    UseAbmProducto(parsedId);
+    UseAbmProducto({ id: parsedId });
 
   const [formData, setFormData] = useState({
     nombre: producto?.title || "",
@@ -22,7 +22,7 @@ function AbmProducto() {
     descripcion: producto?.description || "",
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     console.log(`Campo ${name} cambiado a: ${value}`);
     setFormData({
@@ -39,7 +39,7 @@ function AbmProducto() {
     }
   };
 
-  const handleImageChange = (index, newValue) => {
+  const handleImageChange = (index: number, newValue: string) => {
     setEditedImages((prevImages) => {
       const updatedImages = [...prevImages];
       updatedImages[index] = newValue;
@@ -55,7 +55,6 @@ function AbmProducto() {
         descripcion: producto.description || "",
       });
 
-      // Si el producto tiene imágenes, inicializa 'images' y 'editedImages' con esas imágenes
       if (producto.images && producto.images.length > 0) {
         setImages([...producto.images]);
         setEditedImages([...producto.images]);
@@ -63,16 +62,16 @@ function AbmProducto() {
     }
   }, [parsedId, producto]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   
     let nuevoProducto;
-    let imagesToSend = producto?.images || [];
+    const imagesToSend = producto?.images || [];
   
     if (parsedId === 0) {
       nuevoProducto = {
         title: formData.nombre,
-        price: parseFloat(formData.precio),
+        price: formData.precio.toString(),
         description: formData.descripcion,
         categoryId: dataRecibida,
         images: images, // Envía el array de imágenes tal como está para un nuevo producto
@@ -80,7 +79,7 @@ function AbmProducto() {
     } else {
       nuevoProducto = {
         title: formData.nombre,
-        price: parseFloat(formData.precio),
+        price: formData.precio.toString(),
         description: formData.descripcion,
         images: editedImages.length > 0 ? editedImages : imagesToSend, // Utiliza editedImages si ha habido ediciones, de lo contrario, usa las imágenes originales del producto
       };
@@ -92,8 +91,8 @@ function AbmProducto() {
   };
 
 
-  const onDataChangeSelect = (data) => {
-    console.log("onDataChangeSelect", data)
+  const onDataChangeSelect = (data: string) => {
+    console.log("data del select", data)
     setReceivedData(data); // Actualizar el estado con los datos recibidos del select
   };
   
@@ -230,26 +229,6 @@ function AbmProducto() {
             </div>
           ))}
         </div>
-
-        {/* {parsedId > 0 && (
-          <div className="row mt-3">
-            <div className="col-md-12">
-              <h4>Imágenes Actuales:</h4>
-              <div className="row">
-                {producto?.images.map((imageUrl, index) => (
-                  <div className="col-md-3 mb-3" key={index}>
-                    <img
-                      src={imageUrl}
-                      alt={`Imagen ${index}`}
-                      className="img-fluid"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )} */}
-
         <hr />
         <div className="row">
           <div className="col-md-12">

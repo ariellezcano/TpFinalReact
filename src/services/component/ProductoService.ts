@@ -36,7 +36,7 @@ const ProductoService = {
     }
   },
 
-  post: async (data: FormData) => {
+  post: async (data: Producto) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/products/`, data);
       console.log("respuesta del post", response);
@@ -55,7 +55,7 @@ const ProductoService = {
     }
   },
 
-  put: async (id: number, data: FormData) => {
+  put: async (id: number, data: Producto) => {
     try {
       const response = await axios.put(`${API_BASE_URL}/products/${id}`, data);
       //console.log("Datos en el FormData2:", [...data.entries()]);

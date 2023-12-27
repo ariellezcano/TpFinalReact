@@ -45,7 +45,7 @@ const UsuarioService = {
     }
   },
 
-  put: async (id: number, data: FormData) => {
+  put: async (id: number, data: Usuario) => {
     try {
       const response = await axios.put(`${API_BASE_URL}/users/${id}`, data);
       //console.log("Datos en el FormData2:", [...data.entries()]);

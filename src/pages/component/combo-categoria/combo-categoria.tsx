@@ -3,8 +3,7 @@ import UseComboCategoria from "./useComboCategoria";
 
 interface ComboCategoriaProps {
   onDataChange: (selectedCategoryId: string) => void;
-  selectedCategory: number;
-  // Otras props si las hubiera
+  selectedCategory: number | null;
 }
 
 function ComboCategoria({ onDataChange, selectedCategory }: ComboCategoriaProps) {
@@ -24,7 +23,7 @@ function ComboCategoria({ onDataChange, selectedCategory }: ComboCategoriaProps)
           className="form-select border border-primary"
           aria-label="Default select example"
           onChange={handleCategoriaChange}
-          value={selectedCategory}
+          value={selectedCategory !== null ? String(selectedCategory) : ''}
         >
           <option value="" disabled selected>
             Selecciona una categoría

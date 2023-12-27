@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Usuario from "../../../models/usuarios";
-import UsuarioService from "../../../services/component/usersService";
+import UsuarioService from "../../../services/component/UsersService";
 
 interface UseAbmUsuarioProps {
     id: number; // Establecer el tipo de 'id'
@@ -11,15 +11,11 @@ interface UseAbmUsuarioProps {
 function UseAbmUsuario({ id }: UseAbmUsuarioProps) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
 
-  async function action(id: number, item: FormData) {
+  async function action(id: number, item: Usuario) {
     try {
       if (id > 0) {
-        alert("modificar")
         await updateUsuario(id, item);
-      } else {
-        alert("crear")
-        await addUsuario(item);
-      }
+      } 
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -54,7 +50,7 @@ function UseAbmUsuario({ id }: UseAbmUsuarioProps) {
       }
     }, [id]);
 
-  async function updateUsuario(id: number, updatedUsuario: FormData) {
+  async function updateUsuario(id: number, updatedUsuario: Usuario) {
     try {
       const update = await UsuarioService.put(id, updatedUsuario);
       console.log("update", update)
@@ -65,16 +61,6 @@ function UseAbmUsuario({ id }: UseAbmUsuarioProps) {
     }
   }
 
-  async function addUsuario(newUsuario: FormData) {
-    try {
-      const addNewCategoria = await UsuarioService.post(newUsuario);
-      //console.log("creado", addNewCategoria);
-      setUsuario(addNewCategoria);
-      redireccionar()
-    } catch (error) {
-      // Manejar errores aquí
-    }
-  }
 
   const redireccionar = () => {
     window.location.href = `/usuarios`;

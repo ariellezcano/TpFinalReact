@@ -1,6 +1,11 @@
+import Producto from "../../../models/producto";
 import UseFilProducto from "./UseFilProducto";
 
-function FilProducto(props) {
+interface FilProductoProps {
+  onDataChange: (data: Producto[]) => void;
+}
+
+const FilProducto: React.FC<FilProductoProps> = (props) =>  {
   const { limits,data, pagina, setPage, limit, handleLimitChange, handleInputChange, inputValue } = UseFilProducto();
   const dataEnviar = data; // Datos que quieres pasar
 
