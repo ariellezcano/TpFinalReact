@@ -15,9 +15,6 @@ function LstUsuario() {
           <h1>Listado de Usuarios</h1>
         </div>
         <div className="col-md-6">
-          {/* <a className="btn btn-primary" onClick={() => enviarIdAbm(0)}>
-            <i className="fa-solid fa-cart-plus"></i>&nbsp;Agregar Nuevo
-          </a> */}
         </div>
       </div>
       <hr />

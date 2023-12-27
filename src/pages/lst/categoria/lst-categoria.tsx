@@ -6,10 +6,9 @@ import Categoria from "../../../models/categoria";
 function LstCategoria() {
   const { enviarIdAbm } = UseLstCategoria();
 
-  const [dataRecibida, setReceivedData] = useState([]);
-
-  const onDataChange = (data) => {
-    // Esta función se ejecutará cuando FilProducto pase los datos
+  const [dataRecibida, setReceivedData] = useState<Categoria[]>([]);
+  
+  const onDataChange = (data: Categoria[]) => {
     setReceivedData(data); // Actualizar el estado con los datos recibidos
   };
 

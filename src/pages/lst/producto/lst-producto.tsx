@@ -6,11 +6,10 @@ import UseLstProducto from "./useLstProducto";
 function LstProducto() {
   const { enviarIdAbm } = UseLstProducto();
 
-  const [dataRecibida, setReceivedData] = useState([]);
+  const [dataRecibida, setReceivedData] = useState<Producto[]>([]);
 
-  const onDataChange = (data) => {
-    // Esta función se ejecutará cuando FilProducto pase los datos
-    setReceivedData(data); // Actualizar el estado con los datos recibidos
+  const onDataChange = (data: Producto[]) => {
+    setReceivedData(data);
   };
 
   return (
